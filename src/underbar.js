@@ -281,7 +281,7 @@ _.each(arguments,function(ele,key){
    })
    })
   return obj1
-          
+         
     }
 
   // Like extend, but doesn't ever overwrite a key that already
@@ -290,13 +290,11 @@ _.each(arguments,function(ele,key){
         var obj1=arguments[0]
  
       //else{
-_.each(arguments,function(ele,key){
+_.each(arguments,function(ele,i){
      _.each(ele,function(elem,key){
-
-
-     obj1[key]=elem
-
+     if(obj1[key]===undefined) obj1[key]=elem
    })
+
    })
   return obj1
   };
@@ -342,6 +340,18 @@ _.each(arguments,function(ele,key){
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var alreadyCalled = false;
+    var result;
+    return function(){
+    
+    if (!already){
+      result=func.apply(this,arguments)
+      alreadyCalled=true
+    }
+    
+    return result
+}
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -351,6 +361,14 @@ _.each(arguments,function(ele,key){
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+  var temp=wait
+  var arr=Array.from(arguments)
+
+  arr.splice(0,2)
+    setTimeout(function(){ 
+     return func.apply(this,arr)
+
+    }, temp);
   };
 
 
@@ -365,7 +383,26 @@ _.each(arguments,function(ele,key){
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
-  };
+   var temp=Array.from(array)
+  var currentIndex = temp.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = temp[currentIndex];
+    temp[currentIndex] = temp[randomIndex];
+    temp[randomIndex] = temporaryValue;
+    return temp
+  }
+
+  return array;
+  }
+
 
 
   /**
@@ -379,6 +416,7 @@ _.each(arguments,function(ele,key){
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -386,6 +424,14 @@ _.each(arguments,function(ele,key){
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    var newarr=[]
+    return _.each(collection,function(value,key){
+       newarr.push(value.age)
+    
+
+    })
+    return iterator(newarr)
+
   };
 
   // Zip together two or more arrays with elements of the same index
@@ -394,14 +440,31 @@ _.each(arguments,function(ele,key){
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
-  };
+
+
+  }
+ 
+          
+   
+ 
+
+
+
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
   // The new array should contain all elements of the multidimensional array.
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
-  };
+   for (var i=0; i<4; i++) {
+     for (var j=0; j<4; j++) {
+      matrix[i][j] = i*j;
+   }
+   
+}
+        
+  }
+
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
